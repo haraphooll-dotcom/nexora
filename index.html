@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080612">
+<title>NEXORA — Play. Connect. Chat. Share.</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root{
+    --bg:#07060d;
+    --bg2:#0d0a18;
+    --card:rgba(20,16,34,.78);
+    --card2:rgba(28,22,47,.9);
+    --purple:#8b5cf6;
+    --violet:#a855f7;
+    --cyan:#22d3ee;
+    --pink:#ec4899;
+    --text:#f7f5ff;
+    --muted:#9892aa;
+    --border:rgba(255,255,255,.09);
+    --danger:#ef4444;
+    --success:#22c55e;
+}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Inter,Arial,sans-serif;
+    background:
+        radial-gradient(circle at 10% 10%,rgba(139,92,246,.18),transparent 28%),
+        radial-gradient(circle at 90% 20%,rgba(34,211,238,.10),transparent 25%),
+        radial-gradient(circle at 50% 100%,rgba(168,85,247,.13),transparent 35%),
+        var(--bg);
+    color:var(--text);
+    min-height:100vh;
+    overflow-x:hidden;
+}
+
+button,input,textarea{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+.hidden{
+    display:none!important;
+}
+
+/* ---------- SCROLLBAR ---------- */
+
+::-webkit-scrollbar{
+    width:7px;
+}
+
+::-webkit-scrollbar-track{
+    background:transparent;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#332b49;
+    border-radius:20px;
+}
+
+/* ---------- AUTH ---------- */
+
+.auth{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:25px;
+    position:relative;
+    overflow:hidden;
+}
+
+.orb{
+    position:absolute;
+    width:300px;
+    height:300px;
+    border-radius:50%;
+    filter:blur(80px);
+    opacity:.3;
+}
+
+.orb.one{
+    background:#7c3aed;
+    top:-100px;
+    left:-100px;
+}
+
+.orb.two{
+    background:#06b6d4;
+    bottom:-120px;
+    right:-80px;
+}
+
+.auth-box{
+    width:100%;
+    max-width:440px;
+    background:rgba(13,10,24,.82);
+    border:1px solid var(--border);
+    border-radius:28px;
+    padding:35px;
+    backdrop-filter:blur(25px);
+    box-shadow:0 30px 80px rgba(0,0,0,.45);
+    position:relative;
+    z-index:2;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-size:25px;
+    font-weight:800;
+    letter-spacing:.5px;
+}
+
+.logo-icon{
+    width:43px;
+    height:43px;
+    border-radius:14px;
+    display:grid;
+    place-items:center;
+    background:linear-gradient(135deg,var(--purple),var(--cyan));
+    box-shadow:0 0 30px rgba(139,92,246,.35);
+    font-weight:900;
+}
+
+.auth-title{
+    font-size:32px;
+    margin-top:35px;
+    margin-bottom:8px;
+}
+
+.gradient{
+    background:linear-gradient(90deg,#c084fc,#22d3ee);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+}
+
+.auth-sub{
+    color:var(--muted);
+    line-height:1.6;
+    margin-bottom:25px;
+}
+
+.field{
+    margin-bottom:15px;
+}
+
+.field label{
+    display:block;
+    color:#c6c0d5;
+    font-size:13px;
+    margin-bottom:7px;
+}
+
+.field input,
+.field textarea,
+.search input,
+.chat-input{
+    width:100%;
+    background:rgba(255,255,255,.045);
+    color:white;
+    border:1px solid var(--border);
+    outline:none;
+    border-radius:14px;
+    padding:14px 15px;
+    transition:.2s;
+}
+
+.field input:focus,
+.search input:focus,
+.chat-input:focus{
+    border-color:rgba(139,92,246,.7);
+    box-shadow:0 0 0 3px rgba(139,92,246,.1);
+}
+
+.primary{
+    border:0;
+    color:white;
+    font-weight:700;
+    padding:14px 20px;
+    border-radius:14px;
+    background:linear-gradient(135deg,var(--purple),var(--violet));
+    box-shadow:0 10px 30px rgba(139,92,246,.2);
+    transition:.2s;
+}
+
+.primary:hover{
+    transform:translateY(-2px);
+    box-shadow:0 15px 35px rgba(139,92,246,.35);
+}
+
+.full{
+    width:100%;
+}
+
+.auth-switch{
+    text-align:center;
+    color:var(--muted);
+    margin-top:20px;
+    font-size:14px;
+}
+
+.auth-switch span{
+    color:#c084fc;
+    cursor:pointer;
+    font-weight:700;
+}
+
+/* ---------- APP ---------- */
+
+.app{
+    min-height:100vh;
+    display:flex;
+}
+
+.sidebar{
+    width:250px;
+    position:fixed;
+    left:0;
+    top:0;
+    bottom:0;
+    border-right:1px solid var(--border);
+    background:rgba(7,6,13,.82);
+    backdrop-filter:blur(20px);
+    padding:25px 15px;
+    z-index:20;
+}
+
+.sidebar .logo{
+    padding:0 12px;
+    margin-bottom:40px;
+}
+
+.nav{
+    display:flex;
+    flex-direction:column;
+    gap:7px;
+}
+
+.nav button{
+    border:0;
+    background:transparent;
+    color:var(--muted);
+    padding:13px 15px;
+    border-radius:14px;
+    text-align:left;
+    display:flex;
+    align-items:center;
+    gap:13px;
+    transition:.2s;
+}
+
+.nav button:hover,
+.nav button.active{
+    background:linear-gradient(90deg,rgba(139,92,246,.18),rgba(34,211,238,.05));
+    color:white;
+}
+
+.nav-icon{
+    width:22px;
+    text-align:center;
+}
+
+.profile-mini{
+    position:absolute;
+    bottom:20px;
+    left:15px;
+    right:15px;
+    border-top:1px solid var(--border);
+    padding-top:18px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.avatar{
+    width:43px;
+    height:43px;
+    border-radius:50%;
+    object-fit:cover;
+    background:linear-gradient(135deg,#7c3aed,#06b6d4);
+    display:grid;
+    place-items:center;
+    font-weight:800;
+    flex-shrink:0;
+}
+
+.avatar.small{
+    width:37px;
+    height:37px;
+    font-size:12px;
+}
+
+.avatar.large{
+    width:90px;
+    height:90px;
+    font-size:27px;
+}
+
+.profile-mini-info{
+    overflow:hidden;
+}
+
+.profile-mini-info b{
+    display:block;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.profile-mini-info span{
+    color:var(--success);
+    font-size:11px;
+}
+
+.main{
+    margin-left:250px;
+    width:calc(100% - 250px);
+    min-height:100vh;
+}
+
+.topbar{
+    height:75px;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 30px;
+    position:sticky;
+    top:0;
+    background:rgba(7,6,13,.7);
+    backdrop-filter:blur(18px);
+    z-index:10;
+}
+
+.page{
+    display:none;
+    padding:30px;
+    max-width:1300px;
+    margin:auto;
+}
+
+.page.active{
+    display:block;
+}
+
+.page-title{
+    font-size:30px;
+    margin-bottom:7px;
+}
+
+.page-sub{
+    color:var(--muted);
+    margin-bottom:28px;
+}
+
+/* ---------- HOME ---------- */
+
+.hero{
+    min-height:340px;
+    border:1px solid var(--border);
+    border-radius:27px;
+    padding:40px;
+    background:
+        radial-gradient(circle at 80% 20%,rgba(34,211,238,.13),transparent 30%),
+        radial-gradient(circle at 30% 80%,rgba(139,92,246,.15),transparent 40%),
+        var(--card);
+    position:relative;
+    overflow:hidden;
+}
+
+.hero:after{
+    content:"";
+    position:absolute;
+    width:250px;
+    height:250px;
+    border:1px solid rgba(139,92,246,.18);
+    border-radius:50%;
+    right:-70px;
+    bottom:-100px;
+}
+
+.hero h1{
+    font-size:48px;
+    max-width:650px;
+    line-height:1.1;
+    margin-bottom:18px;
+}
+
+.hero p{
+    color:var(--muted);
+    max-width:570px;
+    line-height:1.7;
+    margin-bottom:25px;
+}
+
+.hero-buttons{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+.secondary{
+    border:1px solid var(--border);
+    background:rgba(255,255,255,.05);
+    color:white;
+    padding:13px 18px;
+    border-radius:14px;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+    margin-top:20px;
+}
+
+.stat{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:22px;
+}
+
+.stat b{
+    font-size:25px;
+    display:block;
+}
+
+.stat span{
+    color:var(--muted);
+    font-size:13px;
+}
+
+/* ---------- CARDS ---------- */
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:17px;
+}
+
+.card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:20px;
+    backdrop-filter:blur(12px);
+}
+
+.player-card{
+    transition:.25s;
+}
+
+.player-card:hover{
+    transform:translateY(-4px);
+    border-color:rgba(139,92,246,.35);
+    box-shadow:0 15px 40px rgba(0,0,0,.2);
+}
+
+.player-head{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.player-info{
+    flex:1;
+    min-width:0;
+}
+
+.player-info b{
+    display:block;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.player-info span{
+    color:var(--muted);
+    font-size:12px;
+}
+
+.online{
+    color:var(--success)!important;
+}
+
+.player-bio{
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.5;
+    margin:16px 0;
+}
+
+.card-actions{
+    display:flex;
+    gap:8px;
+}
+
+.card-actions button{
+    flex:1;
+    padding:10px;
+    border-radius:11px;
+    border:1px solid var(--border);
+    color:white;
+    background:rgba(255,255,255,.04);
+}
+
+.card-actions .add{
+    background:linear-gradient(135deg,#7c3aed,#8b5cf6);
+    border:0;
+}
+
+/* ---------- SEARCH ---------- */
+
+.search{
+    margin-bottom:22px;
+    position:relative;
+}
+
+.search input{
+    padding-left:45px;
+}
+
+.search-icon{
+    position:absolute;
+    left:16px;
+    top:13px;
+}
+
+/* ---------- FRIENDS ---------- */
+
+.tabs{
+    display:flex;
+    gap:8px;
+    margin-bottom:20px;
+    overflow-x:auto;
+}
+
+.tab{
+    padding:10px 15px;
+    border-radius:12px;
+    border:1px solid var(--border);
+    background:transparent;
+    color:var(--muted);
+}
+
+.tab.active{
+    background:rgba(139,92,246,.2);
+    color:white;
+}
+
+/* ---------- CHAT ---------- */
+
+.chat-layout{
+    height:calc(100vh - 135px);
+    display:grid;
+    grid-template-columns:300px 1fr;
+    gap:15px;
+}
+
+.chat-list{
+    overflow-y:auto;
+    padding-right:5px;
+}
+
+.chat-person{
+    display:flex;
+    gap:11px;
+    align-items:center;
+    padding:13px;
+    border-radius:14px;
+    cursor:pointer;
+    margin-bottom:4px;
+}
+
+.chat-person:hover,
+.chat-person.active{
+    background:rgba(139,92,246,.12);
+}
+
+.chat-person-info{
+    flex:1;
+    overflow:hidden;
+}
+
+.chat-person-info b{
+    display:block;
+}
+
+.chat-person-info span{
+    color:var(--muted);
+    font-size:11px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.chat-window{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:20px;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+}
+
+.chat-header{
+    padding:15px 18px;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.chat-header-info{
+    flex:1;
+}
+
+.chat-header-info b{
+    display:block;
+}
+
+.chat-header-info span{
+    color:var(--success);
+    font-size:11px;
+}
+
+.messages{
+    flex:1;
+    overflow-y:auto;
+    padding:22px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.message{
+    max-width:72%;
+    padding:11px 14px;
+    border-radius:16px;
+    font-size:14px;
+    line-height:1.5;
+    position:relative;
+}
+
+.message.received{
+    background:rgba(255,255,255,.07);
+    align-self:flex-start;
+    border-bottom-left-radius:4px;
+}
+
+.message.sent{
+    background:linear-gradient(135deg,#7136d7,#8b5cf6);
+    align-self:flex-end;
+    border-bottom-right-radius:4px;
+}
+
+.message-time{
+    font-size:9px;
+    opacity:.6;
+    display:block;
+    margin-top:5px;
+}
+
+.chat-compose{
+    border-top:1px solid var(--border);
+    padding:12px;
+    display:flex;
+    gap:8px;
+    align-items:center;
+}
+
+.chat-input{
+    flex:1;
+}
+
+.icon-btn{
+    width:43px;
+    height:43px;
+    border:1px solid var(--border);
+    border-radius:13px;
+    background:rgba(255,255,255,.04);
+    color:white;
+    display:grid;
+    place-items:center;
+}
+
+.send{
+    background:linear-gradient(135deg,#7c3aed,#06b6d4);
+    border:0;
+}
+
+/* ---------- PROFILE ---------- */
+
+.profile-cover{
+    height:180px;
+    border-radius:25px;
+    background:
+        radial-gradient(circle at 20% 30%,rgba(34,211,238,.25),transparent 25%),
+        radial-gradient(circle at 80% 20%,rgba(168,85,247,.35),transparent 35%),
+        linear-gradient(135deg,#130c29,#071a22);
+    border:1px solid var(--border);
+}
+
+.profile-box{
+    margin-top:-45px;
+    position:relative;
+    padding:0 25px 25px;
+}
+
+.profile-main{
+    display:flex;
+    align-items:end;
+    gap:20px;
+}
+
+.profile-name h2{
+    font-size:27px;
+}
+
+.profile-name p{
+    color:var(--muted);
+    margin-top:5px;
+}
+
+.bio{
+    color:#bbb4ca;
+    margin-top:20px;
+    line-height:1.6;
+    max-width:650px;
+}
+
+/* ---------- MODAL ---------- */
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.7);
+    display:none;
+    place-items:center;
+    z-index:100;
+    padding:20px;
+    backdrop-filter:blur(8px);
+}
+
+.modal.show{
+    display:grid;
+}
+
+.modal-box{
+    width:100%;
+    max-width:430px;
+    background:#100c1b;
+    border:1px solid var(--border);
+    border-radius:22px;
+    padding:25px;
+}
+
+.modal-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+/* ---------- MOBILE ---------- */
+
+.mobile-nav{
+    display:none;
+}
+
+@media(max-width:900px){
+    .sidebar{
+        display:none;
+    }
+
+    .main{
+        margin-left:0;
+        width:100%;
+        padding-bottom:75px;
+    }
+
+    .topbar{
+        padding:0 17px;
+    }
+
+    .page{
+        padding:20px 15px;
+    }
+
+    .hero{
+        padding:28px 22px;
+    }
+
+    .hero h1{
+        font-size:35px;
+    }
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .chat-layout{
+        height:calc(100vh - 115px);
+        grid-template-columns:1fr;
+    }
+
+    .chat-list{
+        display:none;
+    }
+
+    .chat-window{
+        min-height:600px;
+    }
+
+    .mobile-nav{
+        display:flex;
+        position:fixed;
+        bottom:0;
+        left:0;
+        right:0;
+        height:68px;
+        background:rgba(8,6,14,.94);
+        border-top:1px solid var(--border);
+        backdrop-filter:blur(20px);
+        z-index:50;
+        justify-content:space-around;
+    }
+
+    .mobile-nav button{
+        background:transparent;
+        border:0;
+        color:var(--muted);
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        justify-content:center;
+        gap:4px;
+        font-size:10px;
+    }
+
+    .mobile-nav button.active{
+        color:#c084fc;
+    }
+
+    .profile-main{
+        align-items:center;
+    }
+
+    .profile-main .avatar.large{
+        width:70px;
+        height:70px;
+    }
+}
+
+@media(max-width:500px){
+    .auth-box{
+        padding:25px 20px;
+    }
+
+    .auth-title{
+        font-size:27px;
+    }
+
+    .hero h1{
+        font-size:30px;
+    }
+
+    .topbar .search-top{
+        display:none;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ================= AUTH ================= -->
+
+<section id="authScreen" class="auth">
+    <div class="orb one"></div>
+    <div class="orb two"></div>
+
+    <div class="auth-box">
+
+        <div class="logo">
+            <div class="logo-icon">N</div>
+            <span>NEXORA</span>
+        </div>
+
+        <h1 class="auth-title" id="authTitle">
+            Enter the <span class="gradient">NEXORA</span>
+        </h1>
+
+        <p class="auth-sub" id="authSub">
+            Connect with players, make friends and chat beyond the game.
+        </p>
+
+        <form id="authForm">
+
+            <div class="field" id="usernameField">
+                <label>Username</label>
+                <input id="username" type="text" placeholder="Choose a username">
+            </div>
+
+            <div class="field">
+                <label>Email</label>
+                <input id="email" type="email" placeholder="you@example.com" required>
+            </div>
+
+            <div class="field">
+                <label>Password</label>
+                <input id="password" type="password" placeholder="••••••••" required>
+            </div>
+
+            <button class="primary full" type="submit" id="authButton">
+                Create Account
+            </button>
+
+        </form>
+
+        <div class="auth-switch">
+            <span id="authSwitch">Already have an account? Login</span>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- ================= APPLICATION ================= -->
+
+<div id="app" class="app hidden">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            <div class="logo-icon">N</div>
+            <span>NEXORA</span>
+        </div>
+
+        <nav class="nav">
+
+            <button class="active" data-page="home">
+                <span class="nav-icon">⌂</span> Home
+            </button>
+
+            <button data-page="players">
+                <span class="nav-icon">◉</span> Players
+            </button>
+
+            <button data-page="friends">
+                <span class="nav-icon">♧</span> Friends
+            </button>
+
+            <button data-page="messages">
+                <span class="nav-icon">▣</span> Messages
+            </button>
+
+            <button data-page="notifications">
+                <span class="nav-icon">♢</span> Notifications
+            </button>
+
+            <button data-page="profile">
+                <span class="nav-icon">●</span> Profile
+            </button>
+
+        </nav>
+
+        <div class="profile-mini">
+
+            <div class="avatar small" id="sideAvatar">N</div>
+
+            <div class="profile-mini-info">
+                <b id="sideName">Player</b>
+                <span>● Online</span>
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+        <header class="topbar">
+
+            <div>
+                <b id="topTitle">Home</b>
+            </div>
+
+            <div style="display:flex;gap:10px;align-items:center">
+
+                <button class="icon-btn" onclick="openNotifications()">🔔</button>
+
+                <button class="icon-btn" onclick="logout()">↪</button>
+
+            </div>
+
+        </header>
+
+
+        <!-- HOME -->
+
+        <section id="homePage" class="page active">
+
+            <div class="hero">
+
+                <h1>
+                    Welcome to
+                    <span class="gradient">NEXORA</span>
+                </h1>
+
+                <p>
+                    Your gaming social space. Discover players,
+                    build your squad, make friends and chat with
+                    people beyond the game.
+                </p>
+
+                <div class="hero-buttons">
+                    <button class="primary" onclick="goPage('players')">
+                        Find Players
+                    </button>
+
+                    <button class="secondary" onclick="goPage('messages')">
+                        Open Messages
+                    </button>
+                </div>
+
+            </div>
+
+            <div class="stats">
+
+                <div class="stat">
+                    <b id="statFriends">0</b>
+                    <span>Friends</span>
+                </div>
+
+                <div class="stat">
+                    <b id="statRequests">0</b>
+                    <span>Friend Requests</span>
+                </div>
+
+                <div class="stat">
+                    <b id="statMessages">0</b>
+                    <span>Messages</span>
+                </div>
+
+            </div>
+
+            <h2 style="margin:30px 0 15px">Discover Players</h2>
+
+            <div id="homePlayers" class="grid"></div>
+
+        </section>
+
+
+        <!-- PLAYERS -->
+
+        <section id="playersPage" class="page">
+
+            <h1 class="page-title">Discover Players</h1>
+
+            <p class="page-sub">
+                Find people and build your gaming squad.
+            </p>
+
+            <div class="search">
+                <span class="search-icon">🔎</span>
+                <input id="playerSearch" placeholder="Search username or player ID...">
+            </div>
+
+            <div id="playersGrid" class="grid"></div>
+
+        </section>
+
+
+        <!-- FRIENDS -->
+
+        <section id="friendsPage" class="page">
+
+            <h1 class="page-title">Friends</h1>
+
+            <p class="page-sub">
+                Manage your NEXORA connections.
+            </p>
+
+            <div class="tabs">
+
+                <button class="tab active" onclick="friendTab('friends',this)">
+                    Friends
